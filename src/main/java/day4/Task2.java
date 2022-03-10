@@ -13,7 +13,7 @@ public class Task2 {
         }
         System.out.println(Arrays.toString(array));
 
-        int max = 0;
+        int max = array[0];
         for (int element : array) {
             if (element > max)
                 max = element;
@@ -21,7 +21,7 @@ public class Task2 {
 
 
         System.out.println(max);
-        int min = 10000;
+        int min = array[0];
         for (int element2 : array) {
             if (element2 < min)
                 min = element2;
@@ -30,18 +30,14 @@ public class Task2 {
 
 
         int numb0 = 0;
-        for (int element : array) {
-            if (element % 10 == 0)
-                numb0++;
-        }
-        System.out.println(numb0);
-
-
         int sum = 0;
         for (int element : array) {
             if (element % 10 == 0)
+                numb0++;
                 sum += element;
         }
+        System.out.println(numb0);
         System.out.println(sum);
+
     }
 }
