@@ -5,26 +5,28 @@ import java.util.Random;
 public class Task2 {
     public static void main(String[] args) {
 
-        Player player1 = new Player();
-        Player player2 = new Player();
-        Player player3 = new Player();
-        Player player4 = new Player();
-        System.out.println(Player.countPlayers);
+        Random random = new Random();
+
+        Player player1 = new Player(random.nextInt(11) + 90);
+        Player player2 = new Player(random.nextInt(11) + 90);
+        Player player3 = new Player(random.nextInt(11) + 90);
+        Player player4 = new Player(random.nextInt(11) + 90);
+        System.out.println(Player.getCountPlayer());
         Player.info();
-        Player player5 = new Player();
-        Player player6 = new Player();
-        System.out.println(Player.countPlayers);
+        Player player5 = new Player(random.nextInt(11) + 90);
+        Player player6 = new Player(random.nextInt(11) + 90);
+        System.out.println(Player.getCountPlayer());
         Player.info();
 
-        Player player7 = new Player();
-        System.out.println(Player.countPlayers);
+        Player player7 = new Player(random.nextInt(11) + 90);
+        System.out.println(Player.getCountPlayer());
         Player.info();
         System.out.println();
 
         while (player1.getStamina() != 0) {
             player1.run();
         }
-        System.out.println(Player.countPlayers);
+        System.out.println(Player.getCountPlayer());
         Player.info();
     }
 }
@@ -33,12 +35,11 @@ class Player {
     private int stamina;
     final static int MAX_STAMINA = 100;
     final static int MIN_STAMINA = 0;
-    static int countPlayers;
+    private static int countPlayers;
 
-    Random random = new Random();
 
-    public Player() {
-        stamina = random.nextInt(11) + 90;
+    public Player(int stamina) {
+        this.stamina = stamina;
         if (countPlayers < 6) {
             countPlayers++;
         }
