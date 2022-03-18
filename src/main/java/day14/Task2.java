@@ -24,7 +24,7 @@ public class Task2 {
                 String[] partList = line.split(" ");
 
                 if (Integer.parseInt(partList[1]) < 0) {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Некорректный входной файл");
                 }
                 peoples.add(line);
             }
@@ -33,7 +33,7 @@ public class Task2 {
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден");
         } catch (IllegalArgumentException e) {
-            System.out.println("Некорректный входной файл");
+            System.out.println(e.getMessage());
         }
         return null;
     }
