@@ -7,6 +7,21 @@ public class Task1 {
         User user2 = new User("Us2");
         User user3 = new User("Us3");
 
+        user2.subscribe(user3);
+        user2.subscribe(user1);
+        user3.subscribe(user2);
+        user1.subscribe(user3);
+
+        System.out.println(user1.getSubscriptions());
+        System.out.println(user2.getSubscriptions());
+        System.out.println(user3.getSubscriptions());
+
+        System.out.println(user2.isFriend(user3));
+        System.out.println(user3.isFriend(user2));
+        System.out.println(user3.isFriend(user1));
+        System.out.println();
+
+
         user1.sendMessage(user2, "Hello, Us2!");
         user1.sendMessage(user2, "How are you?");
 
