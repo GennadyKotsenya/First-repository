@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Task1 {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         File file = new File("src/main/resources/shoes.csv");
         File file2 = new File("src/main/resources/missing_shoes.txt");
@@ -21,7 +21,7 @@ public class Task1 {
                 String[] partList = line.split(";");
 
                 if (partList.length < 3)
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Некорректный входной файл");
 
                 if (Integer.parseInt(partList[2]) == 0) {
                     pw.println(line);
@@ -32,7 +32,7 @@ public class Task1 {
         } catch (FileNotFoundException e) {
             System.out.println("Фйл не найден");
         } catch (IllegalArgumentException e) {
-            System.out.println("Некорректный входной файл");
+            System.out.println(e.getMessage());
         }
     }
 }
