@@ -6,24 +6,23 @@ import java.util.List;
 public class Task2 {
     public static void main(String[] args) {
 
-        System.out.println(fillingEvenNumbers(0, 30, 300, 350));
+        List<Integer> list = new ArrayList<>();
+
+        fillingEvenNumbers(0, 30, list);
+        fillingEvenNumbers(300, 350, list);
+
+        System.out.println(list);
 
     }
 
-    public static List<Integer> fillingEvenNumbers(
-            int numberIn1, int numberOut1, int numberIn2, int numberOut2) {
-        List<Integer> list = new ArrayList<>();
+    public static void fillingEvenNumbers(
+            int from, int to, List<Integer> list) {
 
-        for (int i = numberIn1; i <= numberOut1; i++) {
+        for (int i = from; i <= to; i++) {
             if (i % 2 == 0) {
                 list.add(i);
             }
         }
-        for (int i = numberIn2; i <= numberOut2; i++) {
-            if (i % 2 == 0) {
-                list.add(i);
-            }
-        }
-        return list;
+
     }
 }
