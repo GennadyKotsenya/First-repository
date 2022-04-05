@@ -1,9 +1,11 @@
 package sea_battle;
 
+import java.util.Map;
 import java.util.Scanner;
 
 import static sea_battle.Implementation.print;
 
+@SuppressWarnings("Convert2streamapi")
 public abstract class Player {
     private FillCharacters[][] battlefield;
     private String playerName;
@@ -11,6 +13,9 @@ public abstract class Player {
     private int countOfShips_2;
     private int countOfShips_3;
     private int countOfShips_4;
+    private Map<Point, FillCharacters> shipDeskMap;
+    private Map<Point, FillCharacters> emptyMap;
+    private Map<Point, FillCharacters> damagedPartMap;
 
     public Player(FillCharacters[][] battlefield, String playerName) {
         this.battlefield = battlefield;
@@ -81,14 +86,44 @@ public abstract class Player {
                 continue;
             }
 
-            for (String s : splitLine) {
+            for (int i = 0; i < splitLine.length;i++) {
 
-                String[] xAndY = s.split(",");
+                String[] xAndY = splitLine[i].split(",");
+
                 int x = Integer.parseInt(xAndY[0]);
                 int y = Integer.parseInt(xAndY[1]);
 
 
+                int uX = x + 1;
+                int dX = x - 1;
+                int uY = y + 1;
+                int dY = y - 1;
+
                 battlefield[x][y] = FillCharacters.SHIP_DECK;
+                shipDeskMap.put(new Point(x,y), FillCharacters.SHIP_DECK);
+
+
+
+//                battlefield[dX][dY] = FillCharacters.HALO;
+//                battlefield[uX][uY] = FillCharacters.HALO;
+//                battlefield[dX][uY] = FillCharacters.HALO;
+//                battlefield[uX][dY] = FillCharacters.HALO;
+//                battlefield[uX][y] = FillCharacters.HALO;
+//                battlefield[x][uY] = FillCharacters.HALO;
+//                battlefield[dX][y] = FillCharacters.HALO;
+//                battlefield[x][dY] = FillCharacters.HALO;
+/*
+            battlefield[2][2] = FillCharacters.SHIP_DECK;
+
+          battlefield[1][1] = FillCharacters.HALO;
+          battlefield[3][3] = FillCharacters.HALO;
+          battlefield[1][3] = FillCharacters.HALO;
+          battlefield[3][1] = FillCharacters.HALO;
+          battlefield[3][2] = FillCharacters.HALO;
+          battlefield[2][3] = FillCharacters.HALO;
+          battlefield[1][2] = FillCharacters.HALO;
+          battlefield[2][1] = FillCharacters.HALO;
+ */
             }
 
             switch (splitLine.length) {
@@ -129,8 +164,8 @@ public abstract class Player {
 /*
 
   Sea                *   *   *   *   *
-  Battle   |.0.|.1.|.2.|.3.|.4.|.5.|.6.|.7.|.8.|.9.|.............................................................
-
+  Battle Y> .0.|.1.|.2.|.3.|.4.|.5.|.6.|.7.|.8.|.9..............................................................
+    X
   |.0.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
   |.1.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
   |.2.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
@@ -142,6 +177,28 @@ public abstract class Player {
   |.8.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
   |.9.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
 
+   Sea                *   *   *   *   *
+ Battle Y> .0.|.1.|.2.|.3.|.4.|.5.|.6.|.7.|.8.|.9.
+   X
+ |.0.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
+ |.1.|     .-.  -   -   -  .-. .-. .-. .-. .-. .-.
+ |.2.|     .-.  -  2,2  -  .-. .-. .-. .-. .-. .-.
+ |.3.|     .-.  -   -   -  .-. .-. .-. .-. .-. .-.
+ |.4.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
+ |.5.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
+ |.6.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
+ |.7.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
+ |.8.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
+ |.9.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
 
+          battlefield[2][2] = FillCharacters.SHIP_DECK;
 
-  */
+          battlefield[1][1] = FillCharacters.HALO;
+          battlefield[3][3] = FillCharacters.HALO;
+          battlefield[1][3] = FillCharacters.HALO;
+          battlefield[3][1] = FillCharacters.HALO;
+          battlefield[3][2] = FillCharacters.HALO;
+          battlefield[2][3] = FillCharacters.HALO;
+          battlefield[1][2] = FillCharacters.HALO;
+          battlefield[2][1] = FillCharacters.HALO;
+ */

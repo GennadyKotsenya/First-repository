@@ -15,7 +15,7 @@ public class Implementation {
         Player2 player2 = new Player2(arrayCharacters2, "Player 2");
 
         player1.fillField();
-        player2.fillField();
+//        player2.fillField();
 
     }
 
