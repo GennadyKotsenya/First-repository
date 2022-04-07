@@ -70,94 +70,101 @@ public abstract class Player {
 
             String line = scanner.nextLine();
             String[] splitLine = line.split(";");
-try {
-    if (splitLine.length == 1 && !line.matches("\\d,\\d")) {
-        throw new IllegalArgumentException("n1.Некорректный ввод. Введите координаты" +
-                " последнего корабля заново.");
-    } else if (splitLine.length == 2 &&
-            !line.matches("\\d,\\d;\\d,\\d")) {
-        System.out.println("n2.Некорректный ввод. Введите координаты" +
-                " последнего корабля заново.");
-        continue;
-    } else if (splitLine.length == 3 &&
-            !line.matches("(\\d,\\d;){2}\\d,\\d")) {
-        System.out.println("n3.Некорректный ввод. Введите координаты" +
-                " последнего корабля заново.");
-        continue;
-    } else if (splitLine.length == 4 &&
-            !line.matches("(\\d,\\d;){3}\\d,\\d")) {
-        System.out.println("n4.Некорректный ввод. Введите координаты" +
-                " последнего корабля заново.");
-        continue;
-    } else if (splitLine.length > 4) {
-        System.out.println("4+.Некорректный ввод. Введите координаты" +
-                " последнего корабля заново.");
-        continue;
-    }
+            try {
+                if (splitLine.length == 1 && !line.matches("\\d,\\d")) {
+                    throw new IllegalArgumentException("n1.Некорректный ввод." +
+                            " Введите координаты последнего корабля заново.");
+                } else if (splitLine.length == 2 &&
+                        !line.matches("\\d,\\d;\\d,\\d")) {
+                    throw new IllegalArgumentException("n2.Некорректный ввод." +
+                            " Введите координаты последнего корабля заново.");
+                } else if (splitLine.length == 3 &&
+                        !line.matches("(\\d,\\d;){2}\\d,\\d")) {
+                    throw new IllegalArgumentException("n3.Некорректный ввод." +
+                            " Введите координаты последнего корабля заново.");
+                } else if (splitLine.length == 4 &&
+                        !line.matches("(\\d,\\d;){3}\\d,\\d")) {
+                    throw new IllegalArgumentException("n4.Некорректный ввод." +
+                            " Введите координаты последнего корабля заново.");
+                } else if (splitLine.length > 4) {
+                    throw new IllegalArgumentException("4+.Некорректный ввод." +
+                            " Введите координаты последнего корабля заново.");
+                }
 
-    for (int i = 0; i < splitLine.length; i++) {
+                for (int i = 0; i < splitLine.length; i++) {
 
-        String[] xAndY = splitLine[i].split(",");
+                    String[] xAndY = splitLine[i].split(",");
 
-        int x = Integer.parseInt(xAndY[0]);
-        int y = Integer.parseInt(xAndY[1]);
-
-        int uX = x + 1;
-        int dX = x - 1;
-        int uY = y + 1;
-        int dY = y - 1;
-
-        battlefield[x][y] = FillCharacters.SHIP_DECK;
-        pointsMap.put(new Point(x, y), FillCharacters.SHIP_DECK);
+                    int x = Integer.parseInt(xAndY[0]);
+                    int y = Integer.parseInt(xAndY[1]);
 
 
-        pointsMap.computeIfAbsent(new Point(dX, dY), b -> getHallo());
-        pointsMap.computeIfAbsent(new Point(uX, uY), b -> getHallo());
-        pointsMap.computeIfAbsent(new Point(dX, uY), b -> getHallo());
-        pointsMap.computeIfAbsent(new Point(uX, dY), b -> getHallo());
-        pointsMap.computeIfAbsent(new Point(uX, y), b -> getHallo());
-        pointsMap.computeIfAbsent(new Point(x, uY), b -> getHallo());
-        pointsMap.computeIfAbsent(new Point(dX, y), b -> getHallo());
-        pointsMap.computeIfAbsent(new Point(x, dY), b -> getHallo());
-    }
 
-    switch (splitLine.length) {
-        case 1:
-            countOfShips_1++;
-            break;
-        case 2:
-            countOfShips_2++;
-            break;
-        case 3:
-            countOfShips_3++;
-            break;
-        case 4:
-            countOfShips_4++;
-            break;
-    }
 
-    if (countOfShips_1 > 4 || countOfShips_2 > 3 ||
-            countOfShips_3 > 2 || countOfShips_4 > 1) {
-        continue;
-    }
+                    int uX = x + 1;
+                    int dX = x - 1;
+                    int uY = y + 1;
+                    int dY = y - 1;
 
-    countOfAllShips = countOfShips_1 + countOfShips_2 + countOfShips_3
-            + countOfShips_4;
+                    battlefield[x][y] = FillCharacters.SHIP_DECK;
+                    pointsMap.put(new Point(x, y), FillCharacters.SHIP_DECK);
 
-    print(battlefield);
 
-    System.out.println(this);
-    System.out.println("countOfAllShips=" + countOfAllShips + ";");
+                    pointsMap.computeIfAbsent(new Point(dX, dY), b -> getHallo());
+                    pointsMap.computeIfAbsent(new Point(uX, uY), b -> getHallo());
+                    pointsMap.computeIfAbsent(new Point(dX, uY), b -> getHallo());
+                    pointsMap.computeIfAbsent(new Point(uX, dY), b -> getHallo());
+                    pointsMap.computeIfAbsent(new Point(uX, y), b -> getHallo());
+                    pointsMap.computeIfAbsent(new Point(x, uY), b -> getHallo());
+                    pointsMap.computeIfAbsent(new Point(dX, y), b -> getHallo());
+                    pointsMap.computeIfAbsent(new Point(x, dY), b -> getHallo());
+                }
 
-    if (countOfAllShips == 10) {
-        System.out.println("Расстановка кораблей \"" + this.playerName +
-                "\" завершина.\n");
-        break;
-    }
-}catch (IllegalArgumentException e) {
-    System.out.println(e.getMessage());
-    continue;
-}
+                switch (splitLine.length) {
+                    case 1:
+                        countOfShips_1++;
+                        break;
+                    case 2:
+                        countOfShips_2++;
+                        break;
+                    case 3:
+                        countOfShips_3++;
+                        break;
+                    case 4:
+                        countOfShips_4++;
+                        break;
+                }
+
+                if (countOfShips_1 > 4 || countOfShips_2 > 3 ||
+                        countOfShips_3 > 2 || countOfShips_4 > 1) {
+                    System.out.println("Доспустимое количество таких" +
+                            " кораблей достигнуто.");
+                    continue;
+                }
+
+                countOfAllShips = countOfShips_1 + countOfShips_2 + countOfShips_3
+                        + countOfShips_4;
+
+                print(battlefield);
+
+                System.out.println(this);
+                System.out.println("countOfAllShips=" + countOfAllShips + ";");
+
+                if (countOfAllShips == 10) {
+                    System.out.println("Расстановка кораблей \"" + this.playerName +
+                            "\" завершина.\n");
+                    break;
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
+
+            for (int i = 0; i < arrayStrike.length; i++) {
+                for (int j = 0; j < arrayStrike.length; j++) {
+                    arrayStrike[i][j] = FillCharacters.EMPTY;
+                }
+            }
         }
     }
 
@@ -167,58 +174,65 @@ try {
     }
 //    .........................................................
 
+    Scanner scanner1 = new Scanner(System.in);
+
     public void striking(Player player) {
 
-        for (int i = 0; i < arrayStrike.length; i++) {
-            for (int j = 0; j < arrayStrike.length; j++) {
-                arrayStrike[i][j] = FillCharacters.EMPTY;
-            }
-        }
+
         print(arrayStrike);
 
-        System.out.println(this.playerName + " Введи координаты удара.\n" +
+        System.out.println(player.playerName + " Введи координаты удара.\n" +
                 "Формат: x,y");
-        String scanPointsLine = scanner.next();
 
-        if (!scanPointsLine.matches("\\d,\\d")) {
-            System.out.println("n1.Некорректный ввод. Введи координаты" +
-                    " последнего удара заново.");
-            striking(player);
-        }
-        String[] xAndYPoint = scanPointsLine.split(",");
-        int x = Integer.parseInt(xAndYPoint[0]);
-        int y = Integer.parseInt(xAndYPoint[1]);
-        strikingSet.add(new Point(x, y));
+        try {
 
-        for (Map.Entry<Point, FillCharacters> entry : pointsMap.entrySet()) {
-            if (new Point(x, y) == entry.getKey() &&
-                    FillCharacters.SHIP_DECK == entry.getValue()) {
-                entry.setValue(FillCharacters.DAMAGED_PART);
-                arrayStrike[x][y] = FillCharacters.DAMAGED_PART;
-                System.out.println("Попадание");
+            String scanPointsLine = scanner1.next();
+
+
+            if (!scanPointsLine.matches("\\d,\\d")) {
+                throw new IllegalArgumentException("n1.Некорректный ввод." +
+                        " Введи координаты последнего удара заново.");
+            }
+            String[] xAndYPoint = scanPointsLine.split(",");
+            int x = Integer.parseInt(xAndYPoint[0]);
+            int y = Integer.parseInt(xAndYPoint[1]);
+            Point nPoint = new Point(x, y);
+
+            if (strikingSet.contains(nPoint)) {
+                System.out.println("Сюда уже стрелял!\n");
                 this.striking(player);
-                print(arrayStrike);
-
-            } else if (new Point(x, y) == entry.getKey() &&
-                    (entry.getValue() == FillCharacters.EMPTY ||
-                            entry.getValue() == FillCharacters.HALO)) {
-
-                arrayStrike[x][y] = FillCharacters.MISTAKE;
-                System.out.println("Мимо!");
             }
 
+            strikingSet.add(nPoint);
+
+
+            for (Map.Entry<Point, FillCharacters> entry : pointsMap.entrySet()) {
+                if (entry.getKey().equals(nPoint) &&
+                        entry.getValue().equals(FillCharacters.SHIP_DECK)) {
+                    entry.setValue(FillCharacters.DAMAGED_PART);
+                    arrayStrike[x][y] = FillCharacters.DAMAGED_PART;
+                    System.out.println("Попадание!");
+                    countOfAllShips--;
+                    this.striking(player);
+
+                } else if (entry.getKey().equals(nPoint) &&
+                        entry.getValue().equals(FillCharacters.HALO)) {
+
+                    arrayStrike[x][y] = FillCharacters.MISTAKE;
+                    System.out.println("Мимо!");
+                }
+            }
+
+//            print(arrayStrike);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            striking(player);
         }
-        System.out.println(1);
+
     }
-//    public void printAfterStrike() {
-//
-//        for (int i = 0; i < battlefield.length; i++) {
-//            for (int j = 0; j < battlefield.length; j++) {
-//                arrayStrike[i][j] = FillCharacters.EMPTY;
-//            }
-//        }
-//    }
 }
+
 
 /*
 

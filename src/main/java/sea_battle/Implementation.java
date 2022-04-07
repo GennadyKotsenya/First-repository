@@ -1,6 +1,6 @@
 package sea_battle;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Implementation {
 
@@ -8,14 +8,31 @@ public class Implementation {
     public static void main(String[] args) {
 
 
-        FillCharacters[][] arrayCharacters1 = new FillCharacters[10][10];
-        FillCharacters[][] arrayCharacters2 = new FillCharacters[10][10];
+        FillCharacters[][] battlefield1 = new FillCharacters[10][10];
+        FillCharacters[][] battlefield2 = new FillCharacters[10][10];
+        FillCharacters[][] arrayStrike1 = new FillCharacters[10][10];
+        FillCharacters[][] arrayStrike2 = new FillCharacters[10][10];
 
-        Player1 player1 = new Player1(arrayCharacters1, "Player 1");
-        Player2 player2 = new Player2(arrayCharacters2, "Player 2");
+        Map<Point, FillCharacters> pointsMap1 =new HashMap<>();
+        Map<Point, FillCharacters> pointsMap2 =new HashMap<>();
+        Set<Point> strikingSet1 = new HashSet<>();
+        Set<Point> strikingSet2 = new HashSet<>();
+
+        Player1 player1 = new Player1(battlefield1,arrayStrike1, "Player 1",
+                pointsMap1, strikingSet1);
+        Player2 player2 = new Player2(battlefield2,arrayStrike2, "Player 2",
+                pointsMap2, strikingSet2);
 
         player1.fillField();
-//        player2.fillField();
+        player2.fillField();
+
+        player2.striking(player1);
+        player1.striking(player2);
+        player2.striking(player1);
+        player1.striking(player2);
+//        player2.striking(player1);
+//        player1.striking(player2);
+//        player2.striking(player1);
 
     }
 
