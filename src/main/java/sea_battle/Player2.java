@@ -3,16 +3,27 @@ package sea_battle;
 import java.util.Map;
 import java.util.Set;
 
-public class Player2 extends Player{
+public class Player2 extends Player {
 
-
+    //
     public Player2(FillCharacters[][] battlefield, FillCharacters[][] arrayStrike,
                    String playerName, Map<Point, FillCharacters> pointsMap,
-                   Set<Point> strikingSet) {
-        super(battlefield, arrayStrike, playerName, pointsMap, strikingSet);
+                   Set<Point> strikingSet, Set<Point> shipLocationSet) {
+        super(battlefield, arrayStrike, playerName, pointsMap, strikingSet,
+                shipLocationSet);
     }
 }
 /*
+  неисправности:
+   - если в условие цикла while написать (countOfAllDecks != 0) , то
+   при внесени нескольких координат, последняя не вносится вместе со всеми
+   если условие меняю на (scanner.hasNextLine()), тоже при внесении нескольких координат
+   последняя не вносится, если не добавить лишнюю строчку(у меня ".")
+
+   - проверка на то, попадает ли корабль в зону ареола др. корабля, производиться только при постановке первой палубы(на первой итерации цикла).
+   - нет связи между палубами. Многопалубный корабль не индефицируется как одно целое.
+   - не проявляется ореол при уничтожении корабля
+
                           Player 2
   Sea                *   *   *   *   *
   Battle   |.0.|.1.|.2.|.3.|.4.|.5.|.6.|.7.|.8.|.9.|
@@ -28,7 +39,9 @@ public class Player2 extends Player{
   |.8.|     .-. .-. .-. .-. .-. .-. .-. .-. .-. .-.
   |.9.|     .-. .-. .-. .-. 9,4;9,5;9,6;9,7 .-. .-.
 
-   *
+
+   Для расстановки кораблей:
+
    9,4;9,5;9,6;9,7
    2,0;3,0;4,0
    4,3;5,3;6,3
@@ -40,6 +53,28 @@ public class Player2 extends Player{
    6,6
    5,9
    .
-   *
+
+    Для нанесения ударов:
+   9,4
+   9,5
+   9,6
+   9,7
+   2,0
+   3,0
+   4,0
+   4,3
+   5,3
+   6,3
+   1,3
+   1,4
+   0,8
+   1,8
+   2,6
+   3,6
+   0,1
+   7,0
+   6,6
+   5,9
+   .
 
  */

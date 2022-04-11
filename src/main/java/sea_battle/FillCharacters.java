@@ -1,8 +1,8 @@
 package sea_battle;
 
 public enum FillCharacters {
-    EMPTY(".-. "),SHIP_DECK("8,8 "),HALO(" -  "),
-    DAMAGED_PART("0,0 ") ;
+    EMPTY(".-. "), SHIP_DECK("8,8 "), HALO(" -  "),
+    DAMAGED_PART(".#. "), MISTAKE(" *  ");
 
 
     private String designation;
@@ -15,5 +15,5 @@ public enum FillCharacters {
         return designation;
     }
 
-
+    //
 }
