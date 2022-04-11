@@ -1,7 +1,7 @@
 package sea_battle;
 
 import java.util.Objects;
-
+//
 class Point {
     private final int x;
     private final int y;

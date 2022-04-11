@@ -1,9 +1,8 @@
 package sea_battle;
 
 import java.util.*;
-
+//  в классах player, player1, player внизу оставлены образцы координат))
 public class Implementation {
-
 
     public static void main(String[] args) {
 

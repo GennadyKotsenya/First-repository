@@ -2,7 +2,7 @@ package sea_battle;
 
 import java.util.Map;
 import java.util.Set;
-
+//
 public class Player1 extends Player {
 
     public Player1(FillCharacters[][] battlefield, FillCharacters[][] arrayStrike,
