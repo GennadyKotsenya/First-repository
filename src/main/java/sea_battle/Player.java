@@ -1,8 +1,10 @@
 package sea_battle;
 
+import java.io.IOException;
 import java.util.*;
 
 import static sea_battle.Implementation.print;
+
 //
 public abstract class Player {
 
@@ -74,6 +76,8 @@ public abstract class Player {
     List<Integer> arrayX = new ArrayList<>();
     List<Integer> arrayY = new ArrayList<>();
 
+    int i;
+
     public void fillField() {
 
         while (scanner.hasNextLine()) {
@@ -82,26 +86,27 @@ public abstract class Player {
             String[] splitLine = line.split(";");
             try {
                 if (splitLine.length == 1 && !line.matches("\\d,\\d")) {
-                    throw new IllegalArgumentException("n1.Некорректный ввод." +
+                    throw new IOException("n1.Некорректный ввод." +
                             " Введите координаты последнего корабля заново.");
                 } else if (splitLine.length == 2 &&
                         !line.matches("\\d,\\d;\\d,\\d")) {
-                    throw new IllegalArgumentException("n2.Некорректный ввод." +
+                    throw new IOException("n2.Некорректный ввод." +
                             " Введите координаты последнего корабля заново.");
                 } else if (splitLine.length == 3 &&
                         !line.matches("(\\d,\\d;){2}\\d,\\d")) {
-                    throw new IllegalArgumentException("n3.Некорректный ввод." +
+                    throw new IOException("n3.Некорректный ввод." +
                             " Введите координаты последнего корабля заново.");
                 } else if (splitLine.length == 4 &&
                         !line.matches("(\\d,\\d;){3}\\d,\\d")) {
-                    throw new IllegalArgumentException("n4.Некорректный ввод." +
+                    throw new IOException("n4.Некорректный ввод." +
                             " Введите координаты последнего корабля заново.");
                 } else if (splitLine.length > 4) {
-                    throw new IllegalArgumentException("4+.Некорректный ввод." +
+                    throw new IOException("4+.Некорректный ввод." +
                             " Введите координаты последнего корабля заново.");
                 }
 
-                for (int i = 0; i < splitLine.length; i++) {
+
+                for (i = 0; i < splitLine.length; i++) {
 
                     String[] xAndY = splitLine[i].split(",");
 
@@ -111,29 +116,38 @@ public abstract class Player {
                     Point pointXAndY = new Point(x, y);
 
 
+                    if (splitLine.length == 2 || splitLine.length == 3 ||
+                            splitLine.length == 4) {
+                        arrayX.add(0, x);
+                        arrayY.add(0, y);
+                    }
+
+
                     if (shipLocationSet.contains(pointXAndY)) {
                         throw new IllegalArgumentException("Вы уже размещали корабль в этом месте.");
                     }
 
-                    if (splitLine.length == 2 || splitLine.length == 3 ||
-                            splitLine.length == 4) {
-                        arrayX.add(x);
-                        arrayY.add(y);
-                    }
+                    if (i == splitLine.length - 1 && arrayX.size() > 1 && arrayY.size() > 1) {
 
-                    if (i == splitLine.length - 1 && !arrayX.isEmpty() && !arrayY.isEmpty()) {
-                        if (!arrayX.get(arrayX.size() - 1).equals(arrayX.get(arrayX.size() - 2)) &&
-                                !arrayY.get(arrayY.size() - 1).equals(arrayY.get(arrayX.size() - 2))) {
+                        if (!arrayX.get(0).equals(arrayX.get(1)) &&
+                                !arrayY.get(0).equals(arrayY.get(1))) {
 
+                            returnQuantity();
+
+                            System.out.println(i);
                             throw new IllegalArgumentException("Корабль не валиден." +
                                     "Палубы корабля не должны распологаться по диагонали." +
                                     "\nВведите координаты последнего корабля заново.");
 
-                        } else if (!arrayX.get(arrayX.size() - 1).equals(arrayX.get(arrayX.size() - 2) - 1) &&
-                                !arrayY.get(arrayY.size() - 1).equals(arrayY.get(arrayY.size() - 2) - 1) &&
-                                !arrayX.get(arrayX.size() - 1).equals(arrayX.get(arrayX.size() - 2) + 1) &&
-                                !arrayY.get(arrayY.size() - 1).equals(arrayY.get(arrayY.size() - 2) + 1)) {
 
+                        } else if (!arrayX.get(0).equals(arrayX.get(1) - 1) &&
+                                !arrayY.get(0).equals(arrayY.get(1) - 1) &&
+                                !arrayX.get(0).equals(arrayX.get(1) + 1) &&
+                                !arrayY.get(0).equals(arrayY.get(1) + 1)) {
+
+                            returnQuantity();
+
+                            System.out.println(i);
                             throw new IllegalArgumentException("Корабль не валиден." +
                                     " Палубы одного корабля не должны быть разрознены." +
                                     "\nВведите координаты последнего корабля заново.");
@@ -154,30 +168,24 @@ public abstract class Player {
                     Point dXy = new Point(dX, y);
                     Point xdY = new Point(x, dY);
 
-                    checkHalo(dXdY, pointsMap);
-                    checkHalo(uXuY, pointsMap);
-                    checkHalo(dXuY, pointsMap);
-                    checkHalo(uXdY, pointsMap);
-                    checkHalo(uXy, pointsMap);
-                    checkHalo(xuY, pointsMap);
-                    checkHalo(dXy, pointsMap);
-                    checkHalo(xdY, pointsMap);
 
-                    if ((pointsMap.get(pointXAndY) == FillCharacters.HALO) && i == 0) {
-                        throw new IllegalArgumentException("Вы ставите корабль в зоне ареола.");
-                    }
+                    checkHalo(dXdY);
+                    checkHalo(uXuY);
+                    checkHalo(dXuY);
+                    checkHalo(uXdY);
+                    checkHalo(uXy);
+                    checkHalo(xuY);
+                    checkHalo(dXy);
+                    checkHalo(xdY);
 
+
+//---------------------------------------------------------------------------
                     battlefield[x][y] = FillCharacters.SHIP_DECK;
                     pointsMap.put(pointXAndY, FillCharacters.SHIP_DECK);
                     shipLocationSet.add(pointXAndY);
                     countOfAllDecks++;
+//----------------------------------------------------------------------------
 
-                }
-
-                if (countOfShips_1 > 4 || countOfShips_2 > 3 ||
-                        countOfShips_3 > 2 || countOfShips_4 > 1) {
-                    throw new IllegalArgumentException("Доспустимое количество таких" +
-                            " кораблей достигнуто.");
                 }
 
                 switch (splitLine.length) {
@@ -198,6 +206,29 @@ public abstract class Player {
                 countOfAllShips = countOfShips_1 + countOfShips_2 + countOfShips_3
                         + countOfShips_4;
 
+                if (countOfShips_1 > 4) {
+
+                    throw new IllegalArgumentException("Доспустимое количество таких" +
+                            " кораблей достигнуто.");
+
+                } else if (countOfShips_2 > 3) {
+
+                    returnQuantityI2();
+                    throw new IllegalArgumentException("Доспустимое количество таких" +
+                            " кораблей достигнуто.");
+
+                } else if (countOfShips_3 > 2) {
+
+                    returnQuantityI3();
+                    throw new IllegalArgumentException("Доспустимое количество таких" +
+                            " кораблей достигнуто.");
+
+                } else if (countOfShips_4 > 1) {
+
+                    returnQuantityI4();
+                    throw new IllegalArgumentException("Доспустимое количество таких" +
+                            " кораблей достигнуто.");
+                }
 
                 print(battlefield);
 
@@ -214,6 +245,15 @@ public abstract class Player {
 
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+
+                shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
+                arrayX.remove(0);
+                arrayY.remove(0);
+
+                continue;
+            } catch (IOException e) {
+
+                System.out.println(e.getMessage());
                 continue;
             }
 
@@ -226,9 +266,66 @@ public abstract class Player {
 
     }
 
-    public static void checkHalo(Point point, Map<Point, FillCharacters> pointsMap) {
+    public void returnQuantityI2() {
+
+        shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
+        arrayX.remove(1);
+        arrayY.remove(1);
+        countOfAllDecks--;
+    }
+
+    public void returnQuantityI3() {
+
+        shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
+        shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
+        arrayX.remove(1);
+        arrayY.remove(1);
+        arrayX.remove(2);
+        arrayY.remove(2);
+        countOfAllDecks -= 2;
+    }
+
+    public void returnQuantityI4() {
+        shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
+        shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
+        shipLocationSet.remove(new Point(arrayX.get(3), arrayY.get(3)));
+        arrayX.remove(1);
+        arrayY.remove(1);
+        arrayX.remove(2);
+        arrayY.remove(2);
+        arrayX.remove(3);
+        arrayY.remove(3);
+        countOfAllDecks -= 3;
+    }
+
+    public void returnQuantity() {
+        if (i == 1) {
+
+            returnQuantityI2();
+
+        } else if (i == 2) {
+
+            returnQuantityI3();
+
+        } else if (i == 3) {
+
+            returnQuantityI4();
+
+        }
+    }
+
+    public void checkHalo(Point point) {
+
+        if (i > 0 && pointsMap.get(new Point(arrayX.get(1), arrayY.get(1))) ==
+                FillCharacters.HALO && pointsMap.get(point) == FillCharacters.SHIP_DECK) {
+
+            returnQuantity();
+            throw new IllegalArgumentException("Вы ставите корабль в зоне ареола. checkHALO");
+
+        }
 
         if (pointsMap.get(point) != FillCharacters.SHIP_DECK) {
+
             pointsMap.put(point, FillCharacters.HALO);
         }
 
