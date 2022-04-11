@@ -5,7 +5,6 @@ import java.util.Set;
 
 public class Player1 extends Player {
 
-    //
     public Player1(FillCharacters[][] battlefield, FillCharacters[][] arrayStrike,
                    String playerName, Map<Point, FillCharacters> pointsMap,
                    Set<Point> strikingSet, Set<Point> shipLocationSet) {

@@ -15,5 +15,4 @@ public enum FillCharacters {
         return designation;
     }
 
-    //
 }

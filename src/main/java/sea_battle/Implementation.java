@@ -6,7 +6,6 @@ public class Implementation {
 
 
     public static void main(String[] args) {
-        //
 
         FillCharacters[][] battlefield1 = new FillCharacters[10][10];
         FillCharacters[][] battlefield2 = new FillCharacters[10][10];

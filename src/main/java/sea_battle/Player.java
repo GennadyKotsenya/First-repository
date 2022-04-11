@@ -5,7 +5,7 @@ import java.util.*;
 import static sea_battle.Implementation.print;
 
 public abstract class Player {
-    //
+
     private FillCharacters[][] battlefield;
     private FillCharacters[][] arrayStrike;
     private String playerName;
