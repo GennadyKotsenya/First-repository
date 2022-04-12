@@ -1,5 +1,7 @@
 package sea_battle;
 
+import com.sun.scenario.effect.impl.prism.ps.PPSPhongLighting_POINTPeer;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -75,6 +77,7 @@ public abstract class Player {
 
     List<Integer> arrayX = new ArrayList<>();
     List<Integer> arrayY = new ArrayList<>();
+    List<Point> listShipDeck = new ArrayList<>();
 
     int i;
     String[] splitLine;
@@ -184,16 +187,23 @@ public abstract class Player {
                     checkHalo(dXy);
                     checkHalo(xdY);
 
-
-
+                    listHalo.remove(pointXAndY);
 
 //---------------------------------------------------------------------------
-                    battlefield[x][y] = FillCharacters.SHIP_DECK;
+                    listShipDeck.add(pointXAndY);
                     pointsMap.put(pointXAndY, FillCharacters.SHIP_DECK);
                     shipLocationSet.add(pointXAndY);
                     countOfAllDecks++;
 //----------------------------------------------------------------------------
 
+                }
+
+                for(Point elementListShipDeck: listShipDeck){
+                    battlefield[elementListShipDeck.getX()][elementListShipDeck.getY()] = FillCharacters.SHIP_DECK;
+                }
+
+                for (Point elementListHalo: listHalo){
+                    battlefield[elementListHalo.getX()][elementListHalo.getY()] = FillCharacters.HALO;
                 }
 
                 switch (splitLine.length) {
@@ -257,7 +267,8 @@ public abstract class Player {
                 shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
                 arrayX.remove(0);
                 arrayY.remove(0);
-                battlefield[arrayX.get(0)][arrayY.get(0)] = FillCharacters.EMPTY;
+                listHalo.clear();
+                listShipDeck.clear();
 
                 continue;
             } catch (IOException e) {
@@ -278,7 +289,6 @@ public abstract class Player {
     public void returnQuantityI2() {
 
         shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
-        battlefield[arrayX.get(1)][arrayY.get(1)] = FillCharacters.EMPTY;
         arrayX.remove(1);
         arrayY.remove(1);
         countOfAllDecks--;
@@ -288,8 +298,6 @@ public abstract class Player {
 
         shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
         shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
-        battlefield[arrayX.get(1)][arrayY.get(1)] = FillCharacters.EMPTY;
-        battlefield[arrayX.get(2)][arrayY.get(2)] = FillCharacters.EMPTY;
         arrayX.remove(1);
         arrayY.remove(1);
         arrayX.remove(2);
@@ -301,9 +309,6 @@ public abstract class Player {
         shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
         shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
         shipLocationSet.remove(new Point(arrayX.get(3), arrayY.get(3)));
-        battlefield[arrayX.get(1)][arrayY.get(1)] = FillCharacters.EMPTY;
-        battlefield[arrayX.get(2)][arrayY.get(2)] = FillCharacters.EMPTY;
-        battlefield[arrayX.get(3)][arrayY.get(3)] = FillCharacters.EMPTY;
         arrayX.remove(1);
         arrayY.remove(1);
         arrayX.remove(2);
@@ -329,29 +334,24 @@ public abstract class Player {
         }
     }
 
+    List<Point> listHalo = new ArrayList<>();
     public void checkHalo(Point point) {
 
         if (i > 0 && pointsMap.get(new Point(arrayX.get(1), arrayY.get(1))) ==
                 FillCharacters.SHIP_DECK && pointsMap.get(point) == FillCharacters.SHIP_DECK &&
                 !point.equals(new Point(arrayX.get(1), arrayY.get(1)))) {
 
-            System.out.println(i);
             returnQuantity();
             throw new IllegalArgumentException("Вы ставите корабль в зоне ареола." +
-                    " checkHALO .  Координата палубы косаемого корабля = "+point.getX()+","+point.getY());
+                    " checkHALO .  Координата палубы косаемого корабля : "+point.getX()+","+point.getY());
 
         }
 
 
         if (pointsMap.get(point) != FillCharacters.SHIP_DECK) {
 
-            pointsMap.put(point, FillCharacters.HALO);
-
-            if(point.getX() >= 0 && point.getX() < 10 &&
-                    point.getY() >= 0 && point.getY() < 10 ) {
-
-                battlefield[point.getX()][point.getY()] = FillCharacters.HALO;
-            }
+            if(point.getX() >= 0 && point.getX() < 10 && point.getY() >= 0 && point.getY() < 10  )
+            listHalo.add(point);
         }
 
     }
