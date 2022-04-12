@@ -128,11 +128,6 @@ public abstract class Player {
                         throw new IllegalArgumentException("Вы уже размещали корабль в этом месте.");
                     }
 
-//                    int uXar1 = arrayX.get(1) + 1;
-//                    int dXar1 = arrayX.get(1) - 1;
-//                    int uYar1 = arrayY.get(1) + 1;
-//                    int dYar1 = arrayY.get(1) - 1;
-
                     if (i == splitLine.length - 1 && arrayX.size() > 1 && arrayY.size() > 1 && i != 0) {
 
                         if (!arrayX.get(0).equals(arrayX.get(1)) &&
@@ -392,10 +387,6 @@ public abstract class Player {
             int y = Integer.parseInt(xAndYPoint[1]);
 
             Point strikePoint = new Point(x, y);
-//            Point strikePoint1 = new Point(--x, y);
-//            Point strikePoint2 = new Point(x, --y);
-//            Point strikePoint3 = new Point(++x, y);
-//            Point strikePoint4 = new Point(x, ++y);
 
             if (strikingSet.contains(strikePoint)) {
                 throw new IllegalArgumentException("Сюда уже стрелял!");
@@ -411,10 +402,6 @@ public abstract class Player {
 
                     arrayStrike[x][y] = FillCharacters.DAMAGED_PART;
 
-//                    if(arrayStrike[--x][y] == FillCharacters.DAMAGED_PART &&
-//                    entry.getKey()){
-
-//                    }
                     System.out.println("Попадание!");
 
                     countOfAllDecks--;
