@@ -117,8 +117,8 @@ public abstract class Player {
 
                     Point pointXAndY = new Point(x, y);
 
-                        arrayX.add(0, x);
-                        arrayY.add(0, y);
+                    arrayX.add(0, x);
+                    arrayY.add(0, y);
 
 
                     if (shipLocationSet.contains(pointXAndY)) {
@@ -182,7 +182,7 @@ public abstract class Player {
 
                         i = i + 1;
                         throw new IllegalArgumentException
-                                ("Вы ставите корабль в зоне ареола.");
+                                ("Вы ставите корабль в зоне ареола. i = 0.");
                     }
 
                     haloSet.remove(pointXAndY);
@@ -191,21 +191,20 @@ public abstract class Player {
 
                 }
 
-                if(splitLine.length == 1 && i == 1) {
+                if (splitLine.length == 1 && i == 1) {
 
-                    System.out.println("countOfShips_1, i :"+i);
+                    System.out.println("countOfShips_1, i :" + i);
                     countOfShips_1++;
-                } else if(splitLine.length == 2 && i == 2) {
-                    System.out.println("countOfShips_2, i :"+i);
+                } else if (splitLine.length == 2 && i == 2) {
+                    System.out.println("countOfShips_2, i :" + i);
                     countOfShips_2++;
-                } else if(splitLine.length == 3 && i == 3) {
-                    System.out.println("countOfShips_3, i :"+i);
+                } else if (splitLine.length == 3 && i == 3) {
+                    System.out.println("countOfShips_3, i :" + i);
                     countOfShips_3++;
-                } else if(splitLine.length == 4 && i == 4) {
-                    System.out.println("countOfShips_4, i :"+i);
+                } else if (splitLine.length == 4 && i == 4) {
+                    System.out.println("countOfShips_4, i :" + i);
                     countOfShips_4++;
                 }
-
 
 
                 if (countOfShips_1 > 4) {
@@ -267,36 +266,18 @@ public abstract class Player {
                 }
 
             } catch (IllegalArgumentException e) {
-
-                System.out.println(arrayX);
-                System.out.println(arrayY);
-//                for (Point eachSet: shipLocationSet ){
-//                    System.out.println(eachSet);
-//                }
-
                 System.out.println(e.getMessage());
                 returnQuantity();
                 arrayX.clear();
                 arrayY.clear();
                 haloSet.clear();
-                System.out.println(this);
-                System.out.println("countOfAllShips = " + countOfAllShips + ";");
-                System.out.println("countOfAllDecks = " + countOfAllDecks + ";");
-
-                System.out.println(arrayX);
-                System.out.println(arrayY);
-//                for (Point eachSet: shipLocationSet ){
-//                    System.out.println(eachSet);
-//                }
-                System.out.println("i = "+i);
-
                 continue;
 
             } catch (IOException e) {
-
                 System.out.println(e.getMessage());
                 continue;
             }
+
 
             for (int i = 0; i < arrayStrike.length; i++) {
                 for (int j = 0; j < arrayStrike.length; j++) {
@@ -306,15 +287,14 @@ public abstract class Player {
         }
 
     }
+
     public void returnQuantityI1() {
 
-        System.out.println("Выполняется returnQuantityI1()");
         shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
     }
 
     public void returnQuantityI2() {
 
-        System.out.println("Выполняется returnQuantityI2()");
         shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
         shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
         countOfAllDecks -= 2;
@@ -322,7 +302,6 @@ public abstract class Player {
 
     public void returnQuantityI3() {
 
-        System.out.println("Выполняется returnQuantityI3()");
         shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
         shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
         shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
@@ -331,7 +310,6 @@ public abstract class Player {
 
     public void returnQuantityI4() {
 
-        System.out.println("Выполняется returnQuantityI4()");
         shipLocationSet.remove(new Point(arrayX.get(3), arrayY.get(3)));
         shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
         shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
@@ -362,18 +340,13 @@ public abstract class Player {
 
     public void checkHalo(Point point) {
 
-//        if (i > 0) {
-//            System.out.println("point.getX() , point.getY() : " + point.getX() + "," + point.getY() +
-//                    "; arrayX.get(1) = " + arrayX.get(1) + "; arrayY.get(1) = " + arrayY.get(1));
-//        }
-
         if (i > 0 && shipLocationSet.contains(new Point(arrayX.get(1), arrayY.get(1))) &&
                 shipLocationSet.contains(point) &&
                 !point.equals(new Point(arrayX.get(1), arrayY.get(1)))) {
 
 
             countOfAllDecks++;
-            i = i+1;
+            i = i + 1;
 
             throw new IllegalArgumentException("Вы ставите корабль в зоне ареола." +
                     " checkHALO .");
