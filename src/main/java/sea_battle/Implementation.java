@@ -24,14 +24,22 @@ public class Implementation {
                 pointsMap2, strikingSet2, shipLocationSet2);
 
 
+        long start = System.currentTimeMillis();
+
         player1.printEmptyAndFirstText();
         player1.fillField();
 
-        player2.printEmptyAndFirstText();
-        player2.fillField();
+        long end = System.currentTimeMillis();
 
+//        player2.printEmptyAndFirstText();
+//        player2.fillField();
 
-        play(player1,player2);
+        System.out.println("--------------------------------------------------");
+
+        System.out.println("Время: "+ (end-start));
+        System.out.println("--------------------------------------------------");
+
+//        play(player1,player2);
 
 
     }

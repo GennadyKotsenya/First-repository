@@ -1,7 +1,5 @@
 package sea_battle;
 
-import com.sun.scenario.effect.impl.prism.ps.PPSPhongLighting_POINTPeer;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -77,8 +75,7 @@ public abstract class Player {
 
     List<Integer> arrayX = new ArrayList<>();
     List<Integer> arrayY = new ArrayList<>();
-    List<Point> listShipDeck = new ArrayList<>();
-    List<Point> listHalo = new ArrayList<>();
+    Set<Point> haloSet = new HashSet<>();
 
     int i;
     String[] splitLine;
@@ -123,31 +120,30 @@ public abstract class Player {
                         arrayX.add(0, x);
                         arrayY.add(0, y);
 
+
                     if (shipLocationSet.contains(pointXAndY)) {
                         throw new IllegalArgumentException("Вы уже размещали корабль в этом месте.");
                     }
+
 
                     if (i == splitLine.length - 1 && arrayX.size() > 1 && arrayY.size() > 1 && i != 0) {
 
                         if (!arrayX.get(0).equals(arrayX.get(1)) &&
                                 !arrayY.get(0).equals(arrayY.get(1))) {
 
-                            returnQuantity();
-
-//                            System.out.println(i);
+                            i = i + 1;
+                            countOfAllDecks++;
                             throw new IllegalArgumentException("Корабль не валиден." +
                                     "Палубы корабля не должны распологаться по диагонали." +
-                                    "\nВведите координаты последнего корабля заново. " +
-                                    "Предыдущая координата: " + arrayX.get(1) + "," + arrayY.get(1));
-
+                                    "\nВведите координаты последнего корабля заново.");
 
                         } else if (!arrayX.get(0).equals(arrayX.get(1) - 1) &&
                                 !arrayY.get(0).equals(arrayY.get(1) - 1) &&
                                 !arrayX.get(0).equals(arrayX.get(1) + 1) &&
                                 !arrayY.get(0).equals(arrayY.get(1) + 1)) {
 
-                            returnQuantity();
-
+                            i = i + 1;
+                            countOfAllDecks++;
                             throw new IllegalArgumentException("Корабль не валиден." +
                                     " Палубы одного корабля не должны быть разрознены." +
                                     "\nВведите координаты последнего корабля заново.");
@@ -170,9 +166,6 @@ public abstract class Player {
                     Point xdY = new Point(x, dY);
 
 
-
-                    listShipDeck.add(pointXAndY);
-
                     checkHalo(dXdY);
                     checkHalo(dXy);
                     checkHalo(dXuY);
@@ -185,16 +178,68 @@ public abstract class Player {
 
                     shipLocationSet.add(pointXAndY);
 
-                    if (i == 0 && listHalo.contains(pointXAndY)) {
+                    if (i == 0 && haloSet.contains(pointXAndY)) {
 
-                        throw new IllegalArgumentException("Вы ставите корабль в зоне ареола.");
+                        i = i + 1;
+                        throw new IllegalArgumentException
+                                ("Вы ставите корабль в зоне ареола.");
                     }
 
-                    listHalo.remove(pointXAndY);
+                    haloSet.remove(pointXAndY);
 
                     countOfAllDecks++;
 
                 }
+
+                if(splitLine.length == 1 && i == 1) {
+
+                    System.out.println("countOfShips_1, i :"+i);
+                    countOfShips_1++;
+                } else if(splitLine.length == 2 && i == 2) {
+                    System.out.println("countOfShips_2, i :"+i);
+                    countOfShips_2++;
+                } else if(splitLine.length == 3 && i == 3) {
+                    System.out.println("countOfShips_3, i :"+i);
+                    countOfShips_3++;
+                } else if(splitLine.length == 4 && i == 4) {
+                    System.out.println("countOfShips_4, i :"+i);
+                    countOfShips_4++;
+                }
+
+
+
+                if (countOfShips_1 > 4) {
+
+                    countOfShips_1--;
+                    countOfAllDecks--;
+
+                    throw new IllegalArgumentException("Доспустимое количество однопалубных" +
+                            " кораблей достигнуто.");
+
+                } else if (countOfShips_2 > 3) {
+
+                    countOfShips_2--;
+
+                    throw new IllegalArgumentException("Доспустимое количество двухпалубных" +
+                            " кораблей достигнуто.");
+
+                } else if (countOfShips_3 > 2) {
+
+                    countOfShips_3--;
+
+                    throw new IllegalArgumentException("Доспустимое количество трехпалубных" +
+                            " кораблей достигнуто.");
+
+                } else if (countOfShips_4 > 1) {
+
+                    countOfShips_4--;
+
+                    throw new IllegalArgumentException("Доспустимое количество четырехпалубных" +
+                            " кораблей достигнуто.");
+                }
+
+                countOfAllShips = countOfShips_1 + countOfShips_2 + countOfShips_3
+                        + countOfShips_4;
 
                 for (Point elementListShipDeck : shipLocationSet) {
 
@@ -202,51 +247,10 @@ public abstract class Player {
                     pointsMap.put(elementListShipDeck, FillCharacters.SHIP_DECK);
                 }
 
-                for (Point elementListHalo : listHalo) {
+                for (Point elementListHalo : haloSet) {
                     battlefield[elementListHalo.getX()][elementListHalo.getY()] = FillCharacters.HALO;
                 }
 
-                switch (splitLine.length) {
-                    case 1:
-                        countOfShips_1++;
-                        break;
-                    case 2:
-                        countOfShips_2++;
-                        break;
-                    case 3:
-                        countOfShips_3++;
-                        break;
-                    case 4:
-                        countOfShips_4++;
-                        break;
-                }
-
-                countOfAllShips = countOfShips_1 + countOfShips_2 + countOfShips_3
-                        + countOfShips_4;
-
-                if (countOfShips_1 > 4) {
-
-                    throw new IllegalArgumentException("Доспустимое количество таких" +
-                            " кораблей достигнуто.");
-
-                } else if (countOfShips_2 > 3) {
-
-                    returnQuantityI2();
-                    throw new IllegalArgumentException("Доспустимое количество таких" +
-                            " кораблей достигнуто.");
-
-                } else if (countOfShips_3 > 2) {
-
-                    returnQuantityI3();
-                    throw new IllegalArgumentException("Доспустимое количество таких" +
-                            " кораблей достигнуто.");
-
-                } else if (countOfShips_4 > 1) {
-
-                    returnQuantityI4();
-                    throw new IllegalArgumentException("Доспустимое количество таких" +
-                            " кораблей достигнуто.");
-                }
 
                 print(battlefield);
 
@@ -263,13 +267,28 @@ public abstract class Player {
                 }
 
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
 
-                shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
+                System.out.println(arrayX);
+                System.out.println(arrayY);
+//                for (Point eachSet: shipLocationSet ){
+//                    System.out.println(eachSet);
+//                }
+
+                System.out.println(e.getMessage());
+                returnQuantity();
                 arrayX.clear();
                 arrayY.clear();
-                listHalo.clear();
-                listShipDeck.clear();
+                haloSet.clear();
+                System.out.println(this);
+                System.out.println("countOfAllShips = " + countOfAllShips + ";");
+                System.out.println("countOfAllDecks = " + countOfAllDecks + ";");
+
+                System.out.println(arrayX);
+                System.out.println(arrayY);
+//                for (Point eachSet: shipLocationSet ){
+//                    System.out.println(eachSet);
+//                }
+                System.out.println("i = "+i);
 
                 continue;
 
@@ -287,44 +306,59 @@ public abstract class Player {
         }
 
     }
+    public void returnQuantityI1() {
+
+        System.out.println("Выполняется returnQuantityI1()");
+        shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
+    }
 
     public void returnQuantityI2() {
 
+        System.out.println("Выполняется returnQuantityI2()");
         shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
-        countOfAllDecks--;
+        shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
+        countOfAllDecks -= 2;
     }
 
     public void returnQuantityI3() {
 
-        shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
+        System.out.println("Выполняется returnQuantityI3()");
         shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
-        countOfAllDecks -= 2;
-    }
-
-    public void returnQuantityI4() {
         shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
-        shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
-        shipLocationSet.remove(new Point(arrayX.get(3), arrayY.get(3)));
+        shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
         countOfAllDecks -= 3;
     }
 
+    public void returnQuantityI4() {
+
+        System.out.println("Выполняется returnQuantityI4()");
+        shipLocationSet.remove(new Point(arrayX.get(3), arrayY.get(3)));
+        shipLocationSet.remove(new Point(arrayX.get(2), arrayY.get(2)));
+        shipLocationSet.remove(new Point(arrayX.get(1), arrayY.get(1)));
+        shipLocationSet.remove(new Point(arrayX.get(0), arrayY.get(0)));
+        countOfAllDecks -= 4;
+    }
+
     public void returnQuantity() {
+
         if (i == 1) {
 
-            returnQuantityI2();
+            returnQuantityI1();
 
         } else if (i == 2) {
 
-            returnQuantityI3();
+            returnQuantityI2();
 
         } else if (i == 3) {
+
+            returnQuantityI3();
+
+        } else if (i == 4) {
 
             returnQuantityI4();
 
         }
     }
-
-
 
     public void checkHalo(Point point) {
 
@@ -333,23 +367,24 @@ public abstract class Player {
 //                    "; arrayX.get(1) = " + arrayX.get(1) + "; arrayY.get(1) = " + arrayY.get(1));
 //        }
 
-        if (i > 0 && listShipDeck.contains(new Point(arrayX.get(1), arrayY.get(1))) &&
-                listShipDeck.contains(point) &&
+        if (i > 0 && shipLocationSet.contains(new Point(arrayX.get(1), arrayY.get(1))) &&
+                shipLocationSet.contains(point) &&
                 !point.equals(new Point(arrayX.get(1), arrayY.get(1)))) {
 
-            returnQuantity();
+
+            countOfAllDecks++;
+            i = i+1;
 
             throw new IllegalArgumentException("Вы ставите корабль в зоне ареола." +
-                    " checkHALO .  Координата палубы косаемого корабля : " + point.getX() + "," + point.getY() +
-                    "; arrayX.get(1) = " + arrayX.get(1) + "; arrayY.get(1) = " + arrayY.get(1));
+                    " checkHALO .");
 
         }
 
 
-        if (!listShipDeck.contains(point)) {
+        if (!shipLocationSet.contains(point)) {
 
             if (point.getX() >= 0 && point.getX() < 10 && point.getY() >= 0 && point.getY() < 10)
-                listHalo.add(point);
+                haloSet.add(point);
         }
 
     }
@@ -435,19 +470,6 @@ public abstract class Player {
         }
 
     }
-
-    public void checkShipDeck(Point point) {
-
-
-
-        if (!listShipDeck.contains(point)) {
-
-            if (point.getX() >= 0 && point.getX() < 10 && point.getY() >= 0 && point.getY() < 10)
-                listHalo.add(point);
-        }
-
-    }
-
 
 }
 
