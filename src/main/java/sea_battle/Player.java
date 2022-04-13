@@ -78,6 +78,7 @@ public abstract class Player {
     List<Integer> arrayX = new ArrayList<>();
     List<Integer> arrayY = new ArrayList<>();
     List<Point> listShipDeck = new ArrayList<>();
+    List<Point> listHalo = new ArrayList<>();
 
     int i;
     String[] splitLine;
@@ -119,15 +120,8 @@ public abstract class Player {
 
                     Point pointXAndY = new Point(x, y);
 
-
-                    if (splitLine.length == 2 || splitLine.length == 3 ||
-                            splitLine.length == 4) {
                         arrayX.add(0, x);
                         arrayY.add(0, y);
-                    }
-                    System.out.println(arrayX);
-                    System.out.println(arrayY);
-
 
                     if (shipLocationSet.contains(pointXAndY)) {
                         throw new IllegalArgumentException("Вы уже размещали корабль в этом месте.");
@@ -140,7 +134,7 @@ public abstract class Player {
 
                             returnQuantity();
 
-                            System.out.println(i);
+//                            System.out.println(i);
                             throw new IllegalArgumentException("Корабль не валиден." +
                                     "Палубы корабля не должны распологаться по диагонали." +
                                     "\nВведите координаты последнего корабля заново. " +
@@ -154,7 +148,6 @@ public abstract class Player {
 
                             returnQuantity();
 
-                            System.out.println(i);
                             throw new IllegalArgumentException("Корабль не валиден." +
                                     " Палубы одного корабля не должны быть разрознены." +
                                     "\nВведите координаты последнего корабля заново.");
@@ -176,33 +169,34 @@ public abstract class Player {
                     Point dXy = new Point(dX, y);
                     Point xdY = new Point(x, dY);
 
-                    if (i == 0 && pointsMap.get(pointXAndY) == FillCharacters.HALO) {
-                        throw new IllegalArgumentException("Вы ставите корабль в зоне ареола.");
-                    }
+
 
                     listShipDeck.add(pointXAndY);
 
                     checkHalo(dXdY);
-                    checkHalo(uXuY);
+                    checkHalo(dXy);
                     checkHalo(dXuY);
+                    checkHalo(xdY);
+                    checkHalo(xuY);
                     checkHalo(uXdY);
                     checkHalo(uXy);
-                    checkHalo(xuY);
-                    checkHalo(dXy);
-                    checkHalo(xdY);
+                    checkHalo(uXuY);
+
+
+                    shipLocationSet.add(pointXAndY);
+
+                    if (i == 0 && listHalo.contains(pointXAndY)) {
+
+                        throw new IllegalArgumentException("Вы ставите корабль в зоне ареола.");
+                    }
 
                     listHalo.remove(pointXAndY);
 
-//---------------------------------------------------------------------------
-
-//                    pointsMap.put(pointXAndY, FillCharacters.SHIP_DECK);
-                    shipLocationSet.add(pointXAndY);
                     countOfAllDecks++;
-//----------------------------------------------------------------------------
 
                 }
 
-                for (Point elementListShipDeck : listShipDeck) {
+                for (Point elementListShipDeck : shipLocationSet) {
 
                     battlefield[elementListShipDeck.getX()][elementListShipDeck.getY()] = FillCharacters.SHIP_DECK;
                     pointsMap.put(elementListShipDeck, FillCharacters.SHIP_DECK);
@@ -330,14 +324,14 @@ public abstract class Player {
         }
     }
 
-    List<Point> listHalo = new ArrayList<>();
+
 
     public void checkHalo(Point point) {
 
-        if (i > 0) {
-            System.out.println("point.getX() , point.getY() : " + point.getX() + "," + point.getY() +
-                    "; arrayX.get(1) = " + arrayX.get(1) + "; arrayY.get(1) = " + arrayY.get(1));
-        }
+//        if (i > 0) {
+//            System.out.println("point.getX() , point.getY() : " + point.getX() + "," + point.getY() +
+//                    "; arrayX.get(1) = " + arrayX.get(1) + "; arrayY.get(1) = " + arrayY.get(1));
+//        }
 
         if (i > 0 && listShipDeck.contains(new Point(arrayX.get(1), arrayY.get(1))) &&
                 listShipDeck.contains(point) &&
@@ -438,6 +432,18 @@ public abstract class Player {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             striking(player);
+        }
+
+    }
+
+    public void checkShipDeck(Point point) {
+
+
+
+        if (!listShipDeck.contains(point)) {
+
+            if (point.getX() >= 0 && point.getX() < 10 && point.getY() >= 0 && point.getY() < 10)
+                listHalo.add(point);
         }
 
     }

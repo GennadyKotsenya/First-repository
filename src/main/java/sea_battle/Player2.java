@@ -71,6 +71,7 @@ public class Player2 extends Player {
  .    повтор     .      0,1
  .               .      7,0
  .               .      6,6
+ .  ореол(i = 0) .      5,7
  .               .      5,9
  .               .      .
 
