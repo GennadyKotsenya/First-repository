@@ -1,45 +1,33 @@
 package sea_battle;
 
 import java.util.*;
-//  в классах player, player1, player внизу оставлены образцы координат))
+
+//  в классах player2, player1, player внизу оставлены образцы координат))
+//  в классе player2 оставленны координаты  ошибками расстановки
+
 public class Implementation {
 
     public static void main(String[] args) {
 
-        FillCharacters[][] battlefield1 = new FillCharacters[10][10];
-        FillCharacters[][] battlefield2 = new FillCharacters[10][10];
-        FillCharacters[][] arrayStrike1 = new FillCharacters[10][10];
-        FillCharacters[][] arrayStrike2 = new FillCharacters[10][10];
-
-        Map<Point, FillCharacters> pointsMap1 =new HashMap<>();
-        Map<Point, FillCharacters> pointsMap2 =new HashMap<>();
-        Set<Point> strikingSet1 = new HashSet<>();
-        Set<Point> strikingSet2 = new HashSet<>();
-        Set<Point> shipLocationSet1 = new HashSet<>();
-        Set<Point> shipLocationSet2 = new HashSet<>();
-
-        Player1 player1 = new Player1(battlefield1,arrayStrike1, "Player 1",
-                pointsMap1, strikingSet1, shipLocationSet1);
-        Player2 player2 = new Player2(battlefield2,arrayStrike2, "Player 2",
-                pointsMap2, strikingSet2, shipLocationSet2);
+        Player1 player1 = new Player1("Player 1");
+        Player2 player2 = new Player2("Player 2");
 
 
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
 
         player1.printEmptyAndFirstText();
         player1.fillField();
 
-        long end = System.currentTimeMillis();
+//        long end = System.currentTimeMillis();
 
-//        player2.printEmptyAndFirstText();
-//        player2.fillField();
+        player2.printEmptyAndFirstText();
+        player2.fillField();
 
-        System.out.println("--------------------------------------------------");
+//        System.out.println("--------------------------------------------------");
+//        System.out.println("Время: "+ (end-start));
+//        System.out.println("--------------------------------------------------");
 
-        System.out.println("Время: "+ (end-start));
-        System.out.println("--------------------------------------------------");
-
-//        play(player1,player2);
+        play(player1,player2);
 
 
     }
@@ -56,12 +44,12 @@ public class Implementation {
 
 
         if (player2.getCountOfAllDecks() == 0){
-            System.out.println("Все корабли 'Player 2' поражены." +
-                    " 'Player 1' выиграл!");
+            System.out.println("'Player 1' выиграл!" +
+                    "\nВсе корабли 'Player 2' поражены.");
             return;
         } else  if (player1.getCountOfAllDecks() == 0){
-            System.out.println("Все корабли 'Player 1' поражены." +
-                    " 'Player 2' выиграл!");
+            System.out.println("'Player 2' выиграл!" +
+                    "\nВсе корабли 'Player 1' поражены.");
             return;
         }
 

@@ -5,30 +5,20 @@ import java.util.*;
 
 import static sea_battle.Implementation.print;
 
-//
 public abstract class Player {
 
-    private FillCharacters[][] battlefield;
-    private FillCharacters[][] arrayStrike;
-    private String playerName;
+
+    private final String playerName;
     private int countOfShips_1;
     private int countOfShips_2;
     private int countOfShips_3;
     private int countOfShips_4;
     private int countOfAllShips;
     private int countOfAllDecks;
-    private Map<Point, FillCharacters> pointsMap;
-    private Set<Point> strikingSet;
-    private Set<Point> shipLocationSet;
 
-    public Player(FillCharacters[][] battlefield, FillCharacters[][] arrayStrike,
-                  String playerName, Map<Point, FillCharacters> pointsMap,
-                  Set<Point> strikingSet, Set<Point> shipLocationSet) {
-        this.pointsMap = pointsMap;
-        this.shipLocationSet = shipLocationSet;
-        this.strikingSet = strikingSet;
-        this.battlefield = battlefield;
-        this.arrayStrike = arrayStrike;
+
+    public Player(String playerName) {
+
         this.playerName = playerName;
         this.countOfShips_1 = 0;
         this.countOfShips_2 = 0;
@@ -62,6 +52,7 @@ public abstract class Player {
                 pointsMap.put(new Point(i, j), FillCharacters.EMPTY);
             }
         }
+        System.out.println("--------------------------------------------------------------------------");
         System.out.println("Начинаем расставлять корабли на поле '"
                 + this.playerName + "'" +
                 ". Другой игрок не смитри!\n" +
@@ -76,6 +67,12 @@ public abstract class Player {
     List<Integer> arrayX = new ArrayList<>();
     List<Integer> arrayY = new ArrayList<>();
     Set<Point> haloSet = new HashSet<>();
+    Map<Point, FillCharacters> pointsMap = new HashMap<>();
+    Set<Point> strikingSet = new HashSet<>();
+    Set<Point> shipLocationSet = new HashSet<>();
+    FillCharacters[][] battlefield = new FillCharacters[10][10];
+    FillCharacters[][] arrayStrike = new FillCharacters[10][10];
+
 
     int i;
     String[] splitLine;
@@ -131,7 +128,7 @@ public abstract class Player {
                         if (!arrayX.get(0).equals(arrayX.get(1)) &&
                                 !arrayY.get(0).equals(arrayY.get(1))) {
 
-                            i = i + 1;
+                            i += 1;
                             countOfAllDecks++;
                             throw new IllegalArgumentException("Корабль не валиден." +
                                     "Палубы корабля не должны распологаться по диагонали." +
@@ -142,7 +139,7 @@ public abstract class Player {
                                 !arrayX.get(0).equals(arrayX.get(1) + 1) &&
                                 !arrayY.get(0).equals(arrayY.get(1) + 1)) {
 
-                            i = i + 1;
+                            i += 1;
                             countOfAllDecks++;
                             throw new IllegalArgumentException("Корабль не валиден." +
                                     " Палубы одного корабля не должны быть разрознены." +
@@ -180,7 +177,7 @@ public abstract class Player {
 
                     if (i == 0 && haloSet.contains(pointXAndY)) {
 
-                        i = i + 1;
+                        i += 1;
                         throw new IllegalArgumentException
                                 ("Вы ставите корабль в зоне ареола. i = 0.");
                     }
@@ -193,16 +190,18 @@ public abstract class Player {
 
                 if (splitLine.length == 1 && i == 1) {
 
-                    System.out.println("countOfShips_1, i :" + i);
                     countOfShips_1++;
+
                 } else if (splitLine.length == 2 && i == 2) {
-                    System.out.println("countOfShips_2, i :" + i);
+
                     countOfShips_2++;
+
                 } else if (splitLine.length == 3 && i == 3) {
-                    System.out.println("countOfShips_3, i :" + i);
+
                     countOfShips_3++;
+
                 } else if (splitLine.length == 4 && i == 4) {
-                    System.out.println("countOfShips_4, i :" + i);
+
                     countOfShips_4++;
                 }
 
@@ -346,7 +345,7 @@ public abstract class Player {
 
 
             countOfAllDecks++;
-            i = i + 1;
+            i += 1;
 
             throw new IllegalArgumentException("Вы ставите корабль в зоне ареола." +
                     " checkHALO .");
@@ -422,7 +421,7 @@ public abstract class Player {
                     arrayStrike[x][y] = FillCharacters.MISTAKE;
                     System.out.println("Мимо!");
                     print(arrayStrike);
-                    System.out.println("---------------------------------------------------------------");
+                    System.out.println("----------------------------------------------------");
                     player.striking(this);
 
                 } else if (entry.getKey().equals(strikePoint) &&
@@ -431,7 +430,7 @@ public abstract class Player {
                     arrayStrike[x][y] = FillCharacters.MISTAKE;
                     System.out.println("Мимо!");
                     print(arrayStrike);
-                    System.out.println("---------------------------------------------------------------");
+                    System.out.println("----------------------------------------------------");
                     player.striking(this);
                 }
             }
