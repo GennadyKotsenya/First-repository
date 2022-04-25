@@ -2,15 +2,14 @@ package sea_battle;
 
 import java.util.*;
 
-//  в классах player2, player1, player внизу оставлены образцы координат))
-//  в классе player2 оставленны координаты  ошибками расстановки
+//  в классе  player, внизу(ниже 450 строки) оставлены образцы координат))
 
 public class Implementation {
 
     public static void main(String[] args) {
 
-        Player1 player1 = new Player1("Player 1");
-        Player2 player2 = new Player2("Player 2");
+        Player player1 = new Player("Player 1");
+        Player player2 = new Player("Player 2");
 
 
 //        long start = System.currentTimeMillis();
@@ -27,12 +26,13 @@ public class Implementation {
 //        System.out.println("Время: "+ (end-start));
 //        System.out.println("--------------------------------------------------");
 
-        play(player1,player2);
+        System.out.println("Начинаем сражение!");
+        System.out.println(play(player1,player2));
 
 
     }
 
-    public static void play(Player player1, Player player2){
+    public static String play(Player player1, Player player2){
         Random random = new Random();
         int a = random.nextInt(2)+1;
         if (a == 1){
@@ -44,13 +44,17 @@ public class Implementation {
 
 
         if (player2.getCountOfAllDecks() == 0){
-            System.out.println("'Player 1' выиграл!" +
-                    "\nВсе корабли 'Player 2' поражены.");
-            return;
+
+            return "'Player 1' выиграл!" +
+                    "\nВсе корабли 'Player 2' поражены.";
+
         } else  if (player1.getCountOfAllDecks() == 0){
-            System.out.println("'Player 2' выиграл!" +
-                    "\nВсе корабли 'Player 1' поражены.");
-            return;
+
+            return "'Player 2' выиграл!" +
+                    "\nВсе корабли 'Player 1' поражены.";
+
+        } else {
+            return "Ошибка";
         }
 
     }
